@@ -9,7 +9,8 @@ class App extends Component {
             { id: 2, value: 0 },
             { id: 3, value: 0 },
             { id: 4, value: 0 }
-        ]
+        ],
+        isMobile: false
     };
 
     handleIncrement = counter => {
@@ -33,7 +34,21 @@ class App extends Component {
         this.setState({ counters: counters });
     }
 
+    onWindowResize = () => {
+        this.setState({ isMobile: window.innerWidth < 640 });
+      }
+    
+      componentDidMount() {
+        window.addEventListener('resize', this.onWindowResize);
+      }
+    
+      componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize);
+      }
+
     render() {
+        const { isMobile } = this.state;
+        const showItems = isMobile ? 'Mobile' : 'Desktop';
         return (
             <React.Fragment>
                 <NavBar
@@ -48,6 +63,7 @@ class App extends Component {
                     onIncrement={this.handleIncrement}
                     onDelete={this.handleDelete}
                 />
+                <b>{showItems}</b>
                 </main>
             </React.Fragment>
         );
